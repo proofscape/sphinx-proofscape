@@ -30,6 +30,29 @@ from sphinx.util.docutils import SphinxRole, SphinxDirective
 from sphinx_proofscape.chart_widget import ChartWidget
 
 
+LIBPATH_PATTERN = re.compile(r'\w+(\.\w+)*$')
+VERSION_PATTERN = re.compile(r'WIP|v?\d+\.\d+\.\d+$')
+
+
+def regularize_version_dict(d):
+    """
+    d: version dictionary, i.e. dict in which values are version strings
+
+    return: regularized dictionary, i.e. where each value is either WIP or
+        starts with a 'v'
+    raises: ValueError if any value fails to match the VERSION_PATTERN
+    """
+    r = {}
+    for k, v in d.items():
+        if not VERSION_PATTERN.match(v):
+            raise ValueError(v)
+        if v != "WIP" and not v.startswith('v'):
+            r[k] = f'v{v}'
+        else:
+            r[k] = v
+    return r
+
+
 ###############################################################################
 
 
@@ -68,6 +91,10 @@ class PfscDefnsDirective(SphinxDirective):
     things that control how pfsc widgets are processed:
         * libpath abbreviations
         * versions for referenced repos
+            Note: Generally, versions of referenced repos should be defined
+            in conf.py in the `pfsc_import_repos` variable, which applies
+            globally to all pages. Definitions made here override those,
+            locally to the page where the definition occurs.
 
     Example:
         .. pfsc-defns::
@@ -107,19 +134,16 @@ class PfscDefnsDirective(SphinxDirective):
             mapping = {name: value for name, value in pairs}
             return mapping
 
-        lp_defns = parse_list_of_pairs('libpaths', r'\w+$', r'\w+(\.\w+)*$')
+        lp_defns = parse_list_of_pairs('libpaths', r'\w+$', LIBPATH_PATTERN)
         if not hasattr(self.env, 'pfsc_lp_defns_by_docname'):
             self.env.pfsc_lp_defns_by_docname = {}
         self.env.pfsc_lp_defns_by_docname[self.env.docname] = lp_defns
 
-        vers_defns = parse_list_of_pairs('versions', r'\w+(\.\w+)*$', r'WIP|v?\d+\.\d+\.\d+$')
-        # regularize:
-        for k, v in vers_defns.items():
-            if v != "WIP" and not v.startswith('v'):
-                vers_defns[k] = f'v{v}'
-        if not hasattr(self.env, 'pfsc_all_vers_defns'):
-            self.env.pfsc_all_vers_defns = {}
-        self.env.pfsc_all_vers_defns.update(vers_defns)
+        vers_defns = parse_list_of_pairs('versions', LIBPATH_PATTERN, VERSION_PATTERN)
+        vers_defns = regularize_version_dict(vers_defns)
+        if not hasattr(self.env, 'pfsc_vers_defns_by_docname'):
+            self.env.pfsc_vers_defns_by_docname = {}
+        self.env.pfsc_vers_defns_by_docname[self.env.docname] = vers_defns
 
         return []
 
@@ -133,11 +157,18 @@ class PfscChartWidgetBuilder:
     def finish_run(self, rawtext, label, widget_fields):
         repopath = self.config.pfsc_repopath
         repovers = self.config.pfsc_repovers
+
+        vers_defns = self.config.pfsc_import_repos or {}
+        vers_defns = regularize_version_dict(vers_defns)
+
         docname = self.env.docname
         wnum = self.env.new_serialno('widget')
 
         lp_defns = getattr(self.env, 'pfsc_lp_defns_by_docname', {})
-        vers_defns = getattr(self.env, 'pfsc_all_vers_defns', {})
+        local_vers_defns = getattr(
+            self.env, 'pfsc_vers_defns_by_docname', {}
+        ).get(docname, {})
+        vers_defns.update(local_vers_defns)
 
         src_file, lineno = self.get_source_info()
 

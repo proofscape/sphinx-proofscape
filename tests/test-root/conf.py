@@ -23,6 +23,11 @@ extensions = [
 
 pfsc_repopath = 'test.foo.doc'
 pfsc_repovers = 'WIP'
+pfsc_import_repos = {
+    'gh.foo.bar': '1.2.3',
+    'gh.foo.baz': 'v2.4.6',
+    'gh.foo.spam': 'WIP',
+}
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'venv']

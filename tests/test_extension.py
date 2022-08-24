@@ -1,11 +1,25 @@
+# --------------------------------------------------------------------------- #
+#   Sphinx-Proofscape                                                         #
+#                                                                             #
+#   Copyright (c) 2022 Proofscape contributors                                #
+#                                                                             #
+#   Licensed under the Apache License, Version 2.0 (the "License");           #
+#   you may not use this file except in compliance with the License.          #
+#   You may obtain a copy of the License at                                   #
+#                                                                             #
+#       http://www.apache.org/licenses/LICENSE-2.0                            #
+#                                                                             #
+#   Unless required by applicable law or agreed to in writing, software       #
+#   distributed under the License is distributed on an "AS IS" BASIS,         #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  #
+#   See the License for the specific language governing permissions and       #
+#   limitations under the License.                                            #
+# --------------------------------------------------------------------------- #
+
 import json
 
 import pytest
 from bs4 import BeautifulSoup
-
-
-def test(app):
-    app.build()
 
 
 def get_chart_widget_anchors(html):
@@ -33,7 +47,32 @@ def get_widget_data_from_script_tag(html):
     return None
 
 
-@pytest.mark.sphinx(buildername='html')
+@pytest.mark.sphinx(confoverrides={
+    'pfsc_repopath': 'test.foo.doc2',
+    'pfsc_import_repos.gh.foo.bar': '1.2.4',
+}, freshenv=True)
+def test_conf_overrides(app, status, warning):
+    app.build()
+    assert not status.read()
+    assert not warning.read()
+
+    # Page A
+    # ======
+    html = (app.outdir / 'pageA.html').read_text()
+
+    # The repopath was changed to test.foo.doc2:
+    A = get_chart_widget_anchors(html)
+    assert 'test-foo-doc2-_sphinx-pageA-w0_WIP' in A[0].get('class')
+
+    # The version of gh.foo.bar was changed to 1.2.4:
+    wd = get_widget_data_from_script_tag(html)
+    # print('\n', json.dumps(wd[0], indent=4))
+    assert wd[0]["versions"]["gh.foo.bar"] == "v1.2.4"
+
+
+# Note: Using `freshenv` since we need to rebuild, expecting different output
+# than we got when we tested overriding config vars above.
+@pytest.mark.sphinx(buildername='html', freshenv=True)
 def test_sphinx_build(app, status, warning):
     app.build()
     assert not status.read()
@@ -60,7 +99,7 @@ def test_sphinx_build(app, status, warning):
             "gh.foo.bar": "v1.2.3"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.pageA:CHART:",
-        "src_line": 12,
+        "src_line": 10,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-pageA-w0_WIP",
         "version": "WIP",
@@ -105,10 +144,10 @@ PAGE_C_WIDGET_DATA = [
             "gh.foo.bar.H.ilbert.ZB.Thm168.Pf"
         ],
         "versions": {
-            "gh.foo.bar": "v1.2.3"
+            "gh.foo.bar": "v1.2.5"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 16,
+        "src_line": 14,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w0_WIP",
         "version": "WIP",
@@ -119,10 +158,10 @@ PAGE_C_WIDGET_DATA = [
             "gh.foo.bar.H.ilbert.ZB.Thm168.Thm"
         ],
         "versions": {
-            "gh.foo.bar": "v1.2.3"
+            "gh.foo.bar": "v1.2.5"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 18,
+        "src_line": 16,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w1_WIP",
         "version": "WIP",
@@ -151,10 +190,10 @@ PAGE_C_WIDGET_DATA = [
         },
         "versions": {
             "gh.foo.spam": "WIP",
-            "gh.foo.bar": "v1.2.3"
+            "gh.foo.bar": "v1.2.5"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 32,
+        "src_line": 30,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w2_WIP",
         "version": "WIP",
@@ -171,10 +210,10 @@ PAGE_C_WIDGET_DATA = [
             ]
         },
         "versions": {
-            "gh.foo.bar": "v1.2.3"
+            "gh.foo.bar": "v1.2.5"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 40,
+        "src_line": 38,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w3_WIP",
         "version": "WIP",
@@ -190,10 +229,10 @@ PAGE_C_WIDGET_DATA = [
             ":update": True
         },
         "versions": {
-            "gh.foo.bar": "v1.2.3"
+            "gh.foo.bar": "v1.2.5"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 44,
+        "src_line": 42,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w4_WIP",
         "version": "WIP",

@@ -2,8 +2,6 @@ Page A
 ======
 
 .. pfsc-defns::
-    :versions:
-        gh.foo.bar: 1.2.3
     :libpaths:
         Pf:  gh.foo.bar.H.ilbert.ZB.Thm168.Pf
 

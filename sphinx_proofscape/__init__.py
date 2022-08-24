@@ -27,7 +27,7 @@ from sphinx_proofscape.lang_exts import (
 )
 
 
-__version__ = '0.1.0'
+__version__ = '0.2.0-dev'
 
 
 ###############################################################################
@@ -78,6 +78,7 @@ def setup(app):
 
     app.add_config_value('pfsc_repopath', None, 'html')
     app.add_config_value('pfsc_repovers', None, 'html')
+    app.add_config_value('pfsc_import_repos', None, 'html')
 
     app.add_node(chartwidget,
                  html=(visit_chartwidget_html, depart_chartwidget_html))
