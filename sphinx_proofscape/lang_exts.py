@@ -88,28 +88,22 @@ def depart_chartwidget_html(self, node):
 class PfscDefnsDirective(SphinxDirective):
     """
     The pfsc-defns directive has no visual form; it is just a place to define
-    things that control how pfsc widgets are processed:
-        * libpath abbreviations
-        * versions for referenced repos
-            Note: Generally, versions of referenced repos should be defined
-            in conf.py in the `pfsc_import_repos` variable, which applies
-            globally to all pages. Definitions made here override those,
-            locally to the page where the definition occurs.
+    things that control how pfsc widgets are processed.
+
+    At this time there is only one option, `libpaths`, which accepts
+    definitions of abbreviations for libpaths.
 
     Example:
         .. pfsc-defns::
             :libpaths:
                 Pf:  gh.toepproj.lit.H.ilbert.ZB.Thm168.Pf
                 Thm: gh.toepproj.lit.H.ilbert.ZB.Thm168.Thm
-            :versions:
-                gh.toepproj.lit: 0.23.0
     """
 
     required_arguments = 0
     has_content = False
     option_spec = {
         "libpaths": unchanged,
-        "versions": unchanged,
     }
 
     def run(self):
@@ -139,12 +133,6 @@ class PfscDefnsDirective(SphinxDirective):
             self.env.pfsc_lp_defns_by_docname = {}
         self.env.pfsc_lp_defns_by_docname[self.env.docname] = lp_defns
 
-        vers_defns = parse_list_of_pairs('versions', LIBPATH_PATTERN, VERSION_PATTERN)
-        vers_defns = regularize_version_dict(vers_defns)
-        if not hasattr(self.env, 'pfsc_vers_defns_by_docname'):
-            self.env.pfsc_vers_defns_by_docname = {}
-        self.env.pfsc_vers_defns_by_docname[self.env.docname] = vers_defns
-
         return []
 
 
@@ -165,10 +153,6 @@ class PfscChartWidgetBuilder:
         wnum = self.env.new_serialno('widget')
 
         lp_defns = getattr(self.env, 'pfsc_lp_defns_by_docname', {})
-        local_vers_defns = getattr(
-            self.env, 'pfsc_vers_defns_by_docname', {}
-        ).get(docname, {})
-        vers_defns.update(local_vers_defns)
 
         src_file, lineno = self.get_source_info()
 

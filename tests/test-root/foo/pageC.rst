@@ -8,8 +8,6 @@ Widgets defined here should have the ``foo`` segment in their libpath.
     :libpaths:
         Pf:  gh.foo.bar.H.ilbert.ZB.Thm168.Pf
         Thm: gh.foo.bar.H.ilbert.ZB.Thm168.Thm
-    :versions:
-        gh.foo.bar: 1.2.5
 
 Let's try another inline :pfsc-chart:`chart widget <Pf>`.
 

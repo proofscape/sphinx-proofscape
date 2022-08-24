@@ -144,10 +144,10 @@ PAGE_C_WIDGET_DATA = [
             "gh.foo.bar.H.ilbert.ZB.Thm168.Pf"
         ],
         "versions": {
-            "gh.foo.bar": "v1.2.5"
+            "gh.foo.bar": "v1.2.3"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 14,
+        "src_line": 12,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w0_WIP",
         "version": "WIP",
@@ -158,10 +158,10 @@ PAGE_C_WIDGET_DATA = [
             "gh.foo.bar.H.ilbert.ZB.Thm168.Thm"
         ],
         "versions": {
-            "gh.foo.bar": "v1.2.5"
+            "gh.foo.bar": "v1.2.3"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 16,
+        "src_line": 14,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w1_WIP",
         "version": "WIP",
@@ -190,10 +190,10 @@ PAGE_C_WIDGET_DATA = [
         },
         "versions": {
             "gh.foo.spam": "WIP",
-            "gh.foo.bar": "v1.2.5"
+            "gh.foo.bar": "v1.2.3"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 30,
+        "src_line": 28,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w2_WIP",
         "version": "WIP",
@@ -210,10 +210,10 @@ PAGE_C_WIDGET_DATA = [
             ]
         },
         "versions": {
-            "gh.foo.bar": "v1.2.5"
+            "gh.foo.bar": "v1.2.3"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 38,
+        "src_line": 36,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w3_WIP",
         "version": "WIP",
@@ -229,10 +229,10 @@ PAGE_C_WIDGET_DATA = [
             ":update": True
         },
         "versions": {
-            "gh.foo.bar": "v1.2.5"
+            "gh.foo.bar": "v1.2.3"
         },
         "pane_group": "test.foo.doc@WIP._sphinx.foo.pageC:CHART:",
-        "src_line": 42,
+        "src_line": 40,
         "type": "CHART",
         "uid": "test-foo-doc-_sphinx-foo-pageC-w4_WIP",
         "version": "WIP",
