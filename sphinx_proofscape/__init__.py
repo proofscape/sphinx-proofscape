@@ -25,6 +25,7 @@ from sphinx_proofscape.lang_exts import (
     PfscChartDirective,
     PfscDefnsDirective,
 )
+from sphinx_proofscape.lexer import ProofscapeLexer
 
 
 __version__ = '0.3.0-dev'
@@ -86,6 +87,9 @@ def setup(app):
     app.add_role('pfsc-chart', PfscChartRole())
     app.add_directive('pfsc-chart', PfscChartDirective)
     app.add_directive('pfsc-defns', PfscDefnsDirective)
+
+    app.add_lexer('proofscape', ProofscapeLexer)
+    app.add_lexer('pfsc', ProofscapeLexer)
 
     app.connect('env-purge-doc', purge_chart_widgets)
     app.connect('env-merge-info', merge_chart_widgets)

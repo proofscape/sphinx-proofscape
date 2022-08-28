@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'sphinx'
+        'Sphinx', 'Pygments',
     ],
     license='Apache 2.0',
 )

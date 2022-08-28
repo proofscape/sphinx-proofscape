@@ -17,6 +17,7 @@
 # --------------------------------------------------------------------------- #
 
 import json
+from collections import defaultdict
 
 import pytest
 from bs4 import BeautifulSoup
@@ -47,9 +48,33 @@ def get_widget_data_from_script_tag(html):
     return None
 
 
+def get_highlights(html, language):
+    """
+    Grab all the highlight divs, for a given language.
+    """
+    soup = BeautifulSoup(html, 'html.parser')
+    return list(soup.find_all('div', class_=f'highlight-{language}'))
+
+
+def sort_highlight_spans(hdiv):
+    """
+    Given a highlight div, return a dictionary mapping span classes to
+    sets of strings being the inner text that occurs in spans of that class.
+    """
+    d = defaultdict(set)
+    spans = hdiv.find_all('span')
+    for span in spans:
+        c = span.get('class')
+        if not c or len(c) > 1:
+            continue
+        d[c[0]].add(span.text)
+    return d
+
+
 @pytest.mark.sphinx(confoverrides={
     'pfsc_repopath': 'test.foo.doc2',
     'pfsc_import_repos.gh.foo.bar': '1.2.4',
+    # 'pygments_style': 'github-dark',
 }, freshenv=True)
 def test_conf_overrides(app, status, warning):
     app.build()
@@ -113,6 +138,13 @@ def test_sphinx_build(app, status, warning):
     # Does not define pfsc_widget_data
     assert get_widget_data_from_script_tag(html) is None
 
+    # Get expected classes in proofscape syntax highlight mode
+    hl = get_highlights(html, 'proofscape')
+    assert len(hl) == 1
+    d = sort_highlight_spans(hl[0])
+    #print(d)
+    assert d == PAGE_B_SYNTAX_CLASSES
+
     # Page C
     # ======
     html = (app.outdir / 'foo/pageC.html').read_text()
@@ -136,6 +168,20 @@ PAGE_C_WIDGETS_LABELS = [
     'one-line color definition',
     'color defn with repeated LHS, plus use of update',
 ]
+
+
+PAGE_B_SYNTAX_CLASSES = {
+    'kn': {'from', 'import'},
+    'nn': {'spam', 'Thm', 'Pf', 'P', 'C', 'A', 'Thm.C', 'eggs', 'gh.foo.bar', 'B', 'Thm.P'},
+    'k': {'get', 'From', 'deduc', 'of', 'Suppose', 'hence', 'Then', 'as'},
+    'c1': {'# This is a comment.'},
+    'p': {'{', '.', ',', '}'},
+    'nb': {'meson', 'de', 'sy', 'asrt', 'fr', 'supp', 'en'},
+    'o': {'='},
+    's2': {'"""$A$"""', '"$P$"'},
+    's1': {"'$C$'", "'''$B$'''"},
+    's': {'"', "'"}
+}
 
 
 PAGE_C_WIDGET_DATA = [
