@@ -34,3 +34,8 @@ So there should be no ``<script>`` tag defining a ``pfsc_widget_data``.
         From Thm.P get A. Then B, hence Thm.C.
         '
     }
+
+.. code-block:: meson
+
+    A, so B, therefore C.X by D.Y.Z and E.
+    Hence F, using G, so H.

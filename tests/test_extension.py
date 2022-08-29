@@ -138,12 +138,19 @@ def test_sphinx_build(app, status, warning):
     # Does not define pfsc_widget_data
     assert get_widget_data_from_script_tag(html) is None
 
-    # Get expected classes in proofscape syntax highlight mode
+    # Get expected classes in syntax highlight modes
     hl = get_highlights(html, 'proofscape')
     assert len(hl) == 1
     d = sort_highlight_spans(hl[0])
     #print(d)
-    assert d == PAGE_B_SYNTAX_CLASSES
+    assert d == PAGE_B_PFSC_SYNTAX_CLASSES
+
+    hl = get_highlights(html, 'meson')
+    assert len(hl) == 1
+    d = sort_highlight_spans(hl[0])
+    #print(d)
+    assert d == PAGE_B_MESON_SYNTAX_CLASSES
+
 
     # Page C
     # ======
@@ -170,7 +177,7 @@ PAGE_C_WIDGETS_LABELS = [
 ]
 
 
-PAGE_B_SYNTAX_CLASSES = {
+PAGE_B_PFSC_SYNTAX_CLASSES = {
     'kn': {'from', 'import'},
     'n': {'spam', 'Thm', 'Pf', 'P', 'C', 'A', 'Thm.C', 'eggs', 'gh.foo.bar', 'B', 'Thm.P'},
     'k': {'get', 'From', 'deduc', 'of', 'Suppose', 'hence', 'Then', 'as'},
@@ -181,6 +188,13 @@ PAGE_B_SYNTAX_CLASSES = {
     's2': {'"""$A$"""', '"$P$"'},
     's1': {"'$C$'", "'''$B$'''"},
     's': {'"', "'"}
+}
+
+
+PAGE_B_MESON_SYNTAX_CLASSES = {
+    'n': {'A', 'F', 'H', 'B', 'G', 'D.Y.Z', 'C.X', 'E'},
+    'p': {',', '.'},
+    'k': {'therefore', 'Hence', 'and', 'by', 'so', 'using'}
 }
 
 

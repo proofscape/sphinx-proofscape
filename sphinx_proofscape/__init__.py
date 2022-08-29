@@ -25,7 +25,7 @@ from sphinx_proofscape.lang_exts import (
     PfscChartDirective,
     PfscDefnsDirective,
 )
-from sphinx_proofscape.lexer import ProofscapeLexer
+from sphinx_proofscape.lexer import MesonLexer, ProofscapeLexer
 
 
 __version__ = '0.3.0-dev'
@@ -88,6 +88,7 @@ def setup(app):
     app.add_directive('pfsc-chart', PfscChartDirective)
     app.add_directive('pfsc-defns', PfscDefnsDirective)
 
+    app.add_lexer('meson', MesonLexer)
     app.add_lexer('proofscape', ProofscapeLexer)
     app.add_lexer('pfsc', ProofscapeLexer)
 

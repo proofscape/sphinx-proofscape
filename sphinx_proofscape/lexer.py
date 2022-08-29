@@ -16,13 +16,37 @@
 #   limitations under the License.                                            #
 # --------------------------------------------------------------------------- #
 
-from pygments.lexer import RegexLexer, bygroups, default, include, words
+from pygments.lexer import RegexLexer, bygroups, default, include, words, using
 from pygments.token import *
 
 
 IDENTIFIER = r'[_a-zA-Z]\w*'
 PATH = r'[a-zA-Z_!?]\w*(?:\.[a-zA-Z_!?]\w*)*'
 GEN_STR_TERM = r'\'\'\'|"""|\'|"'
+
+
+class MesonLexer(RegexLexer):
+    name = 'Meson'
+    aliases = ['meson']
+
+    tokens = {
+        'root': [
+            (r'\s+', Text),
+            (words((
+                'so', 'then', 'therefore', 'hence', 'thus', 'get', 'infer',
+                'find', 'implies', 'whence', 'whereupon',
+                'by', 'since', 'using', 'because', 'for',
+                'now', 'next', 'claim',
+                'but', 'meanwhile', 'note', 'have', 'from', 'observe', 'consider',
+                'and', 'plus',
+                'suppose', 'let',
+                'applying',
+                '-->', '..>'
+            ), prefix=r'(?i)', suffix=r'\b'), Keyword),
+            (PATH, Name),
+            (r'[.,;]', Punctuation),
+        ],
+    }
 
 
 class ProofscapeLexer(RegexLexer):
@@ -127,21 +151,9 @@ class ProofscapeLexer(RegexLexer):
             default('#pop'),
         ],
         'meson': [
-            (r'\s+', Text),
-            (words((
-                'so', 'then', 'therefore', 'hence', 'thus', 'get', 'infer',
-                'find', 'implies', 'whence', 'whereupon',
-                'by', 'since', 'using', 'because', 'for',
-                'now', 'next', 'claim',
-                'but', 'meanwhile', 'note', 'have', 'from', 'observe', 'consider',
-                'and', 'plus',
-                'suppose', 'let',
-                'applying',
-                '-->', '..>'
-            ), prefix=r'(?i)', suffix=r'\b'), Keyword),
-            (PATH, Name),
-            (r'[.,;]', Punctuation),
-            (GEN_STR_TERM, String, '#pop'),
+            (r'(?s)(.+?)(\'\'\'|"""|\'|")', bygroups(
+                using(MesonLexer), String
+            ), '#pop'),
         ],
         'strings-single': innerstring_rules(String.Single),
         'strings-double': innerstring_rules(String.Double),
