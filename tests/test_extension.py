@@ -23,22 +23,20 @@ import pytest
 from bs4 import BeautifulSoup
 
 
-def get_chart_widget_anchors(html):
+def get_chart_widget_anchors(soup):
     """
     Get the list of any and all <a> tags having class `chartWidget`.
     """
-    soup = BeautifulSoup(html, 'html.parser')
     return list(soup.find_all('a', class_='chartWidget'))
 
 
-def get_widget_data_from_script_tag(html):
+def get_widget_data_from_script_tag(soup):
     """
     If the HTML contains a <script> tag defining pfsc_widget_data, then parse
     the JSON and return the widget data itself.
 
     Otherwise return None.
     """
-    soup = BeautifulSoup(html, 'html.parser')
     intro = '\nconst pfsc_widget_data = '
     for s in soup.find_all('script'):
         if s.text.startswith(intro):
@@ -48,11 +46,10 @@ def get_widget_data_from_script_tag(html):
     return None
 
 
-def get_highlights(html, language):
+def get_highlights(soup, language):
     """
     Grab all the highlight divs, for a given language.
     """
-    soup = BeautifulSoup(html, 'html.parser')
     return list(soup.find_all('div', class_=f'highlight-{language}'))
 
 
@@ -84,13 +81,14 @@ def test_conf_overrides(app, status, warning):
     # Page A
     # ======
     html = (app.outdir / 'pageA.html').read_text()
+    soup = BeautifulSoup(html, 'html.parser')
 
     # The repopath was changed to test.foo.doc2:
-    A = get_chart_widget_anchors(html)
+    A = get_chart_widget_anchors(soup)
     assert 'test-foo-doc2-_sphinx-pageA-w0_WIP' in A[0].get('class')
 
     # The version of gh.foo.bar was changed to 1.2.4:
-    wd = get_widget_data_from_script_tag(html)
+    wd = get_widget_data_from_script_tag(soup)
     # print('\n', json.dumps(wd[0], indent=4))
     assert wd[0]["versions"]["gh.foo.bar"] == "v1.2.4"
 
@@ -106,14 +104,15 @@ def test_sphinx_build(app, status, warning):
     # Page A
     # ======
     html = (app.outdir / 'pageA.html').read_text()
+    soup = BeautifulSoup(html, 'html.parser')
 
     # Have exactly one chart widget anchor tag, and it has a class encoding its UID.
-    A = get_chart_widget_anchors(html)
+    A = get_chart_widget_anchors(soup)
     assert len(A) == 1
     assert 'test-foo-doc-_sphinx-pageA-w0_WIP' in A[0].get('class')
 
     # Defines the expected pfsc_widget_data
-    wd = get_widget_data_from_script_tag(html)
+    wd = get_widget_data_from_script_tag(soup)
     assert len(wd) == 1
     #print('\n', json.dumps(wd[0], indent=4))
     assert wd[0] == {
@@ -134,18 +133,19 @@ def test_sphinx_build(app, status, warning):
     # Page B
     # ======
     html = (app.outdir / 'pageB.html').read_text()
+    soup = BeautifulSoup(html, 'html.parser')
 
     # Does not define pfsc_widget_data
-    assert get_widget_data_from_script_tag(html) is None
+    assert get_widget_data_from_script_tag(soup) is None
 
     # Get expected classes in syntax highlight modes
-    hl = get_highlights(html, 'proofscape')
+    hl = get_highlights(soup, 'proofscape')
     assert len(hl) == 1
     d = sort_highlight_spans(hl[0])
     #print(d)
     assert d == PAGE_B_PFSC_SYNTAX_CLASSES
 
-    hl = get_highlights(html, 'meson')
+    hl = get_highlights(soup, 'meson')
     assert len(hl) == 1
     d = sort_highlight_spans(hl[0])
     #print(d)
@@ -155,15 +155,16 @@ def test_sphinx_build(app, status, warning):
     # Page C
     # ======
     html = (app.outdir / 'foo/pageC.html').read_text()
+    soup = BeautifulSoup(html, 'html.parser')
 
     # Get the expected anchor tags:
-    A = get_chart_widget_anchors(html)
+    A = get_chart_widget_anchors(soup)
     for i, (a, expected_label) in enumerate(zip(A, PAGE_C_WIDGETS_LABELS)):
         assert f'test-foo-doc-_sphinx-foo-pageC-w{i}_WIP' in a.get('class')
         assert a.text == expected_label
 
     # Get the expected pfsc_widget_data:
-    wd = get_widget_data_from_script_tag(html)
+    wd = get_widget_data_from_script_tag(soup)
     #print('\n', json.dumps(wd, indent=4))
     assert wd == PAGE_C_WIDGET_DATA
 
