@@ -172,7 +172,7 @@ PAGE_C_WIDGETS_LABELS = [
 
 PAGE_B_SYNTAX_CLASSES = {
     'kn': {'from', 'import'},
-    'nn': {'spam', 'Thm', 'Pf', 'P', 'C', 'A', 'Thm.C', 'eggs', 'gh.foo.bar', 'B', 'Thm.P'},
+    'n': {'spam', 'Thm', 'Pf', 'P', 'C', 'A', 'Thm.C', 'eggs', 'gh.foo.bar', 'B', 'Thm.P'},
     'k': {'get', 'From', 'deduc', 'of', 'Suppose', 'hence', 'Then', 'as'},
     'c1': {'# This is a comment.'},
     'p': {'{', '.', ',', '}'},

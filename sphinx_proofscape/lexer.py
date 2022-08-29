@@ -111,19 +111,19 @@ class ProofscapeLexer(RegexLexer):
             (IDENTIFIER, Name),
         ],
         'path': [
-            (PATH, Name.Namespace),
+            (PATH, Name),
         ],
         'import': [
             (r'(?:[ \t]|\\\n)+', Text),
             (r'as\b', Keyword.Namespace),
             (r',', Operator),
-            (r'[a-zA-Z_][\w.]*', Name.Namespace),
+            (r'[a-zA-Z_][\w.]*', Name),
             default('#pop')
         ],
         'fromimport': [
             (r'(?:[ \t]|\\\n)+', Text),
             (r'import\b', Keyword.Namespace, '#pop'),
-            (r'[a-zA-Z_.][\w.]*', Name.Namespace),
+            (r'[a-zA-Z_.][\w.]*', Name),
             default('#pop'),
         ],
         'meson': [
@@ -139,7 +139,7 @@ class ProofscapeLexer(RegexLexer):
                 'applying',
                 '-->', '..>'
             ), prefix=r'(?i)', suffix=r'\b'), Keyword),
-            (PATH, Name.Namespace),
+            (PATH, Name),
             (r'[.,;]', Punctuation),
             (GEN_STR_TERM, String, '#pop'),
         ],
