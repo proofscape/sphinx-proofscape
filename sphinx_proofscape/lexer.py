@@ -22,7 +22,7 @@ from pygments.token import *
 
 IDENTIFIER = r'[_a-zA-Z]\w*'
 PATH = r'[a-zA-Z_!?]\w*(?:\.[a-zA-Z_!?]\w*)*'
-GEN_STR_TERM = r'\'|"|\'\'\'|"""'
+GEN_STR_TERM = r'\'\'\'|"""|\'|"'
 
 
 class ProofscapeLexer(RegexLexer):
@@ -56,7 +56,7 @@ class ProofscapeLexer(RegexLexer):
              'fromimport'),
             (r'(import)((?:\s|\\\s)+)', bygroups(Keyword.Namespace, Text),
              'import'),
-            (r'(meson|arcs)(\s+)(=)(\s+)(\'|"|\'\'\'|""")', bygroups(
+            (r'(meson|arcs)(\s+)(=)(\s+)(\'\'\'|"""|\'|")', bygroups(
                 Name.Builtin, Text, Operator, Text, String
             ), 'meson'),
             (r'=', Operator),
