@@ -151,6 +151,12 @@ def test_sphinx_build(app, status, warning):
     #print(d)
     assert d == PAGE_B_MESON_SYNTAX_CLASSES
 
+    hl = get_highlights(soup, 'meson-grammar')
+    assert len(hl) == 1
+    d = sort_highlight_spans(hl[0])
+    #print(d)
+    assert d == PAGE_B_MESON_GRAMMAR_SYNTAX_CLASSES
+
 
     # Page C
     # ======
@@ -196,6 +202,14 @@ PAGE_B_MESON_SYNTAX_CLASSES = {
     'n': {'A', 'F', 'H', 'B', 'G', 'D.Y.Z', 'C.X', 'E'},
     'p': {',', '.'},
     'k': {'therefore', 'Hence', 'and', 'by', 'so', 'using'}
+}
+
+
+PAGE_B_MESON_GRAMMAR_SYNTAX_CLASSES = {
+    'nb': {'MesonScript', 'method', 'supposition', 'nodes', 'sentence',
+           'reason', 'conclusion', 'initialSentence', 'assertion'},
+    'o': {')*', '*', '?', '|', ')?', '(', '::='},
+    'k': {'sup', 'name', 'how', 'inf', 'modal', 'conj', 'roam', 'flow'}
 }
 
 

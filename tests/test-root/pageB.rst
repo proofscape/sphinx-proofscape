@@ -39,3 +39,16 @@ So there should be no ``<script>`` tag defining a ``pfsc_widget_data``.
 
     A, so B, therefore C.X by D.Y.Z and E.
     Hence F, using G, so H.
+
+.. code-block:: meson-grammar
+    :caption: Meson production rules
+
+    MesonScript ::= roam? initialSentence sentence*
+    initialSentence ::= assertion | supposition
+    sentence ::= conclusion | (roam|flow)? initialSentence
+    conclusion ::= inf assertion method?
+    assertion ::= nodes reason*
+    reason ::= sup nodes
+    method ::= how nodes
+    supposition ::= modal nodes
+    nodes ::= name (conj name)*

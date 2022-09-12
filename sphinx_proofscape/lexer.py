@@ -25,7 +25,30 @@ PATH = r'[a-zA-Z_!?]\w*(?:\.[a-zA-Z_!?]\w*)*'
 GEN_STR_TERM = r'\'\'\'|"""|\'|"'
 
 
+class MesonBnfGrammarLexer(RegexLexer):
+    """
+    This lexer will probably only be used once ever, namely on the Proofscape
+    docs page that shows the BNF grammar for the Meson language.
+    """
+
+    tokens = {
+        'root': [
+            (r'\s+', Text),
+            (words((
+                'inf', 'sup', 'flow', 'roam', 'conj', 'modal', 'how', 'name',
+            ), suffix=r'\b'), Keyword),
+            (words((
+                '::=', '?', '*', '|', '(', ')',
+            )), Operator),
+            (r'\w+', Name.Builtin),
+        ]
+    }
+
+
 class MesonLexer(RegexLexer):
+    """
+    Lexer for the Meson language.
+    """
     name = 'Meson'
     aliases = ['meson']
 
@@ -51,6 +74,8 @@ class MesonLexer(RegexLexer):
 
 class ProofscapeLexer(RegexLexer):
     """
+    Lexer for Proofscape modules.
+
     FIXME:
       This is an initial approximation, to get us started. We're not yet supporting
       annos, and we could be much more careful about defining different states,
