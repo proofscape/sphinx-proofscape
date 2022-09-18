@@ -25,6 +25,11 @@ PATH = r'[a-zA-Z_!?]\w*(?:\.[a-zA-Z_!?]\w*)*'
 GEN_STR_TERM = r'\'\'\'|"""|\'|"'
 
 
+# HINT for debugging a Pygments lexer:
+#  Set a breakpoint in `pygments.lexer.RegexLexer.get_tokens_unprocessed()`, in
+#  the `else` clause that catches the case where none of the regexes matched.
+
+
 class MesonBnfGrammarLexer(RegexLexer):
     """
     This lexer will probably only be used once ever, namely on the Proofscape
