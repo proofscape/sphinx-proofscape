@@ -1,3 +1,10 @@
+## 0.3.1 (220921)
+
+Bug Fixes:
+
+* Syntax highlighting: do not require spaces around `=` in `meson` definition.
+* Syntax highlighting: recognize `subdeduc` as node type.
+
 ## 0.3.0 (220918)
 
 Enhancements:
