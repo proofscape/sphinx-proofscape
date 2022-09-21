@@ -30,7 +30,7 @@ So there should be no ``<script>`` tag defining a ``pfsc_widget_data``.
         asrt B {
             de='''$B$'''
         }
-        meson = '
+        meson='
         From Thm.P get A. Then B, hence Thm.C.
         '
     }

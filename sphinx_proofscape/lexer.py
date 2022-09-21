@@ -110,7 +110,7 @@ class ProofscapeLexer(RegexLexer):
              'fromimport'),
             (r'(import)((?:\s|\\\s)+)', bygroups(Keyword.Namespace, Text),
              'import'),
-            (r'(meson|arcs)(\s+)(=)(\s+)(\'\'\'|"""|\'|")', bygroups(
+            (r'(meson|arcs)(\s*)(=)(\s*)(\'\'\'|"""|\'|")', bygroups(
                 Name.Builtin, Text, Operator, Text, String
             ), 'meson'),
             (r'=', Operator),
@@ -135,7 +135,7 @@ class ProofscapeLexer(RegexLexer):
         'nodetype': [
             (words((
                 'asrt', 'cite', 'exis', 'flse', 'intr', 'mthd', 'rels', 'supp',
-                'univ', 'with'), suffix=r'\b'),
+                'univ', 'with', 'subdeduc'), suffix=r'\b'),
              Name.Builtin),
         ],
         'known-fields': [
