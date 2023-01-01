@@ -147,6 +147,8 @@ class PfscChartWidgetBuilder:
         repovers = self.config.pfsc_repovers
 
         vers_defns = self.config.pfsc_import_repos or {}
+        # FIXME:
+        #  Couldn't this be done just once? Maybe on an early sphinx build hook?
         vers_defns = regularize_version_dict(vers_defns)
 
         docname = self.env.docname
