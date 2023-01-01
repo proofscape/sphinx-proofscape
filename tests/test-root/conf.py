@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'sphinx-proofscape test doc'
-copyright = '2022, author'
+copyright = '2022-2023, author'
 author = 'author'
 
 # -- General configuration ---------------------------------------------------
