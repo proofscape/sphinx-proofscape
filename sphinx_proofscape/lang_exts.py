@@ -240,7 +240,7 @@ class PfscChartDirective(SphinxDirective, PfscChartWidgetBuilder):
         - None of these fields can yet receive any keywords (e.g. "all" for `off_board`).
         - The `view` option cannot yet receive its more advanced format, where
           a whole dictionary is passed.
-    * The `color` and `hovorcolor` fields are fully supported.
+    * The `color` and `hovercolor` fields are fully supported.
 
     Syntax
     ======
