@@ -30,7 +30,7 @@ from sphinx_proofscape.lexer import (
 )
 
 
-__version__ = '0.3.2'
+__version__ = '0.4.0a0'
 
 
 ###############################################################################
@@ -78,26 +78,17 @@ def write_widget_data(app, pagename, templatename, context, event_arg):
 
 
 def setup(app):
-
-    app.add_config_value('pfsc_repopath', None, 'html')
-    app.add_config_value('pfsc_repovers', None, 'html')
-    app.add_config_value('pfsc_import_repos', None, 'html')
-
-    app.add_node(chartwidget,
-                 html=(visit_chartwidget_html, depart_chartwidget_html))
-
-    app.add_role('pfsc-chart', PfscChartRole())
-    app.add_directive('pfsc-chart', PfscChartDirective)
-    app.add_directive('pfsc-defns', PfscDefnsDirective)
+    # In version 0.3.x, we defined more than just the lexers, including roles,
+    # directives, etc.
+    # In version 0.4.x, we define only the lexers, while everything else has
+    # moved into `pise/server`.
+    # In future versions, we may move everything back into this package, which
+    # would then depend on a refactored `pfsc-core` package, yet to come.
 
     app.add_lexer('meson-grammar', MesonBnfGrammarLexer)
     app.add_lexer('meson', MesonLexer)
     app.add_lexer('proofscape', ProofscapeLexer)
     app.add_lexer('pfsc', ProofscapeLexer)
-
-    app.connect('env-purge-doc', purge_chart_widgets)
-    app.connect('env-merge-info', merge_chart_widgets)
-    app.connect('html-page-context', write_widget_data)
 
     return {
         'version': __version__,
