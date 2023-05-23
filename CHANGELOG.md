@@ -1,3 +1,9 @@
+## 0.3.2 (230523)
+
+Maintenance:
+
+* Switch from `setup.py` to `setup.cfg`.
+
 ## 0.3.1 (220921)
 
 Bug Fixes:
