@@ -1,3 +1,11 @@
+## 0.4.0 (230523)
+
+Breaking changes:
+
+* This package now provides only syntax highlighting. All roles and directives
+  related to proofscape widgets are now deactivated here. Their development
+  continues in the `pise/server` project.
+
 ## 0.3.2 (230523)
 
 Maintenance:
